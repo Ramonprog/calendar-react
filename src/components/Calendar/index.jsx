@@ -5,12 +5,15 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import { Container } from "./styles";
 import { useState } from "react";
+import { ModalData } from "./Modal";
 
 moment.locale("pt-br");
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
 
 export function CalendarComponent() {
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [events, setEvents] = useState([
     {
       id: 0,
@@ -47,8 +50,23 @@ export function CalendarComponent() {
     setEvents(newEvents);
   }
 
+  function handleEventClick(event) {
+    console.log("🚀 ~ handleEventClick ~ event:", event);
+    setSelectedEvent(event);
+    setOpenModal(true);
+  }
+
+  // function handleEventClose() {
+  //   setSelectedEvent(null);
+  // }
+
   return (
     <Container>
+      <ModalData
+        open={openModal}
+        setOpen={setOpenModal}
+        eventData={selectedEvent}
+      />
       <DragAndDropCalendar
         localizer={localizer}
         defaultDate={moment().toDate()}
@@ -57,6 +75,7 @@ export function CalendarComponent() {
         style={{ height: "600px" }}
         resizable={false}
         onEventDrop={handleEventDrop}
+        onSelectEvent={handleEventClick}
       />
     </Container>
   );

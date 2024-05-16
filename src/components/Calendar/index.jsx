@@ -23,12 +23,29 @@ export function CalendarComponent() {
     {
       id: 1,
       title: "Marlus Viana",
-      start: new Date(2024, 4, 15),
-      end: new Date(2024, 4, 15),
+      start: new Date(2024, 4, 14),
+      end: new Date(2024, 4, 14),
       desc: "Encerramento de obra",
       type: "singer",
     },
   ]);
+
+  function handleEventDrop(data) {
+    const { event, start, end } = data;
+
+    const newEvents = events.map((item) => {
+      if (item.id === event.id) {
+        return {
+          ...item,
+          start,
+          end,
+        };
+      }
+      return item;
+    });
+
+    setEvents(newEvents);
+  }
 
   return (
     <Container>
@@ -39,6 +56,7 @@ export function CalendarComponent() {
         events={events}
         style={{ height: "600px" }}
         resizable={false}
+        onEventDrop={handleEventDrop}
       />
     </Container>
   );

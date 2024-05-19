@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Container, ControlBtn } from "./styles";
 
 export function CustomToolBar({ label, onView, onNavigate, views }) {
-  console.log("🚀 ~ CustomToolBar ~ label:", label);
   const [anchorEl, setAnchorEl] = useState(null);
   const [viewSelected, setViewSelected] = useState("Mês");
   const open = Boolean(anchorEl);

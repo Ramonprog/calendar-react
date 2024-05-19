@@ -14,9 +14,7 @@ const style = {
   p: 4,
 };
 
-export function AddEvent({ open, setOpen, addData }) {
-  console.log("🚀 ~ AddEvent ~ addData:", addData);
-
+export function AddEvent({ open, setOpen, addData, events, setEvents }) {
   const formatDateTimeLocal = (date) => {
     return moment(date).format("YYYY-MM-DDTHH:mm");
   };
@@ -42,8 +40,26 @@ export function AddEvent({ open, setOpen, addData }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(newEvent); // Adicione essa linha para verificar os dados do evento
+
+    const newEventFormatted = {
+      ...newEvent,
+      start: new Date(newEvent.start),
+      end: new Date(newEvent.end),
+      id: events.length > 0 ? events[events.length - 1].id + 1 : 0,
+    };
+
+    setEvents((prev) => [...prev, newEventFormatted]);
+
     setOpen(false);
+
+    setNewEvent({
+      title: "",
+      start: "",
+      end: "",
+      desc: "",
+      type: "",
+      color: "",
+    });
   }
 
   const handleInputChange = (e) => {
@@ -111,9 +127,9 @@ export function AddEvent({ open, setOpen, addData }) {
               label="Data de Fim"
               name="end"
               value={newEvent.end}
+              type="datetime-local"
               onChange={handleInputChange}
               fullWidth
-              type="datetime-local"
               margin="normal"
             />
             <button type="submit">Adicionar</button>

@@ -4,7 +4,7 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import { Container } from "./styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModalData } from "../Modal";
 import { AsideBar } from "../Aside";
 import "moment-timezone";
@@ -42,8 +42,8 @@ export function CalendarComponent() {
     {
       id: 0,
       title: "Paulinha Abelha",
-      start: new Date(2024, 4, 14, 10, 0),
-      end: new Date(2024, 4, 14, 12, 0),
+      start: new Date(2024, 4, 19, 10, 0),
+      end: new Date(2024, 4, 19, 12, 0),
       desc: "Encerramento de obra",
       type: "singer",
       color: "#f00",
@@ -51,8 +51,8 @@ export function CalendarComponent() {
     {
       id: 1,
       title: "Marlus Viana",
-      start: new Date(2024, 4, 14),
-      end: new Date(2024, 4, 14),
+      start: new Date(2024, 4, 19, 10, 0),
+      end: new Date(2024, 4, 19, 12, 0),
       desc: "Encerramento de obra",
       type: "singer",
       color: "#f0f",
@@ -76,14 +76,16 @@ export function CalendarComponent() {
     setEvents(newEvents);
   }
 
+  useEffect(() => {
+    console.log("🚀 ~ events", events);
+  }, [events]);
+
   function handleEventClick(event) {
-    console.log("🚀 ~ handleEventClick ~ event:", event);
     setSelectedEvent(event);
     setOpenModal(true);
   }
 
   function handleAddEvent(event) {
-    console.log("🚀 ~ handleAddEvent ~ event:", event);
     setSlotSelected(event);
     setOpenAddEvent(true);
   }
@@ -95,6 +97,8 @@ export function CalendarComponent() {
         open={openAddEvent}
         setOpen={setOpenAddEvent}
         addData={slotSelected}
+        events={events}
+        setEvents={setEvents}
       />
       <ModalData
         open={openModal}
@@ -126,10 +130,6 @@ export function CalendarComponent() {
         messages={messages}
         onSelectSlot={handleAddEvent}
         selectable
-        onSelecting={(slot) => {
-          console.log("🚀 ~ onSelecting ~ slot", slot);
-          return false;
-        }}
         className="calendar"
         components={{
           toolbar: CustomToolBar,

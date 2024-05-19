@@ -11,10 +11,9 @@ import "moment-timezone";
 import "moment/locale/pt-br";
 import { CustomToolBar } from "../CustomToolBar";
 
-moment.tz.setDefault("America/Sao_Paulo");
+moment.locale("pt-br");
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
-const localizer = momentLocalizer(moment);
 
 const messages = {
   allDay: "Dia todo",
@@ -33,6 +32,7 @@ const messages = {
 };
 
 export function CalendarComponent() {
+  const localizer = momentLocalizer(moment);
   const [openModal, setOpenModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [events, setEvents] = useState([
@@ -91,6 +91,19 @@ export function CalendarComponent() {
         localizer={localizer}
         defaultDate={moment().toDate()}
         defaultView="month"
+        formats={{
+          timeGutterFormat: "HH:mm",
+          eventTimeRangeFormat: (prop) =>
+            prop.start.toLocaleTimeString("pt-br", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }) +
+            " - " +
+            prop.end.toLocaleTimeString("pt-br", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+        }}
         events={events}
         style={{ height: "600px" }}
         onEventDrop={handleEventDrop}

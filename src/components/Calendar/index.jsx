@@ -10,6 +10,7 @@ import { AsideBar } from "../Aside";
 import "moment-timezone";
 import "moment/locale/pt-br";
 import { CustomToolBar } from "../CustomToolBar";
+import { AddEvent } from "../AddEvents";
 
 moment.locale("pt-br");
 
@@ -35,6 +36,8 @@ export function CalendarComponent() {
   const localizer = momentLocalizer(moment);
   const [openModal, setOpenModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [openAddEvent, setOpenAddEvent] = useState(false);
+  const [slotSelected, setSlotSelected] = useState(null);
   const [events, setEvents] = useState([
     {
       id: 0,
@@ -79,9 +82,20 @@ export function CalendarComponent() {
     setOpenModal(true);
   }
 
+  function handleAddEvent(event) {
+    console.log("🚀 ~ handleAddEvent ~ event:", event);
+    setSlotSelected(event);
+    setOpenAddEvent(true);
+  }
+
   return (
     <Container>
       <AsideBar />
+      <AddEvent
+        open={openAddEvent}
+        setOpen={setOpenAddEvent}
+        addData={slotSelected}
+      />
       <ModalData
         open={openModal}
         setOpen={setOpenModal}
@@ -110,6 +124,12 @@ export function CalendarComponent() {
         onEventResize={handleEventDrop}
         onSelectEvent={handleEventClick}
         messages={messages}
+        onSelectSlot={handleAddEvent}
+        selectable
+        onSelecting={(slot) => {
+          console.log("🚀 ~ onSelecting ~ slot", slot);
+          return false;
+        }}
         className="calendar"
         components={{
           toolbar: CustomToolBar,

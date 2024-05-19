@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import moment from "moment";
@@ -16,8 +17,13 @@ const style = {
   p: 4,
 };
 
-export function ModalData({ open, setOpen, eventData }) {
+export function ModalData({ open, setOpen, eventData, setEvents }) {
   const handleClose = () => setOpen(false);
+
+  function handleDelete() {
+    setEvents((prev) => prev.filter((item) => item.id !== eventData.id));
+    handleClose();
+  }
 
   return (
     <div>
@@ -33,6 +39,14 @@ export function ModalData({ open, setOpen, eventData }) {
           <p>{eventData?.desc}</p>
           <p>{eventData?.start.toLocaleString()}</p>
           <p>{eventData?.end.toLocaleString()}</p>
+          <Button
+            variant="contained"
+            sx={{ marginTop: "10px" }}
+            color="error"
+            onClick={handleDelete}
+          >
+            Deletar Evento
+          </Button>
         </Box>
       </Modal>
     </div>

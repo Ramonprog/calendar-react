@@ -104,6 +104,7 @@ export function CalendarComponent() {
         open={openModal}
         setOpen={setOpenModal}
         eventData={selectedEvent}
+        setEvents={setEvents}
       />
       <DragAndDropCalendar
         localizer={localizer}

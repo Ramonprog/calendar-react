@@ -5,9 +5,14 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import { Container } from "./styles";
 import { useState } from "react";
-import { ModalData } from "./Modal";
+import { ModalData } from "../Modal";
+import { AsideBar } from "../Aside";
+import "moment-timezone";
+import "moment/locale/pt-br";
+import { CustomToolBar } from "../CustomToolBar";
 
-moment.locale("pt-br");
+moment.tz.setDefault("America/Sao_Paulo");
+
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
 
@@ -76,6 +81,7 @@ export function CalendarComponent() {
 
   return (
     <Container>
+      <AsideBar />
       <ModalData
         open={openModal}
         setOpen={setOpenModal}
@@ -91,6 +97,10 @@ export function CalendarComponent() {
         onEventResize={handleEventDrop}
         onSelectEvent={handleEventClick}
         messages={messages}
+        className="calendar"
+        components={{
+          toolbar: CustomToolBar,
+        }}
         eventPropGetter={(event) => {
           const style = {
             backgroundColor: event.color,

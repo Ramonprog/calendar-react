@@ -11,6 +11,22 @@ moment.locale("pt-br");
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
 
+const messages = {
+  allDay: "Dia todo",
+  previous: "Anterior",
+  next: "Próximo",
+  today: "Hoje",
+  month: "Mês",
+  week: "Semana",
+  day: "Dia",
+  agenda: "Agenda",
+  date: "Data",
+  time: "Hora",
+  event: "Evento",
+  noEventsInRange: "Não há eventos neste período.",
+  showMore: (total) => `+ ver mais (${total})`,
+};
+
 export function CalendarComponent() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -22,6 +38,7 @@ export function CalendarComponent() {
       end: new Date(2024, 4, 14, 12, 0),
       desc: "Encerramento de obra",
       type: "singer",
+      color: "#f00",
     },
     {
       id: 1,
@@ -30,6 +47,7 @@ export function CalendarComponent() {
       end: new Date(2024, 4, 14),
       desc: "Encerramento de obra",
       type: "singer",
+      color: "#f0f",
     },
   ]);
 
@@ -56,10 +74,6 @@ export function CalendarComponent() {
     setOpenModal(true);
   }
 
-  // function handleEventClose() {
-  //   setSelectedEvent(null);
-  // }
-
   return (
     <Container>
       <ModalData
@@ -73,9 +87,16 @@ export function CalendarComponent() {
         defaultView="month"
         events={events}
         style={{ height: "600px" }}
-        resizable={false}
         onEventDrop={handleEventDrop}
+        onEventResize={handleEventDrop}
         onSelectEvent={handleEventClick}
+        messages={messages}
+        eventPropGetter={(event) => {
+          const style = {
+            backgroundColor: event.color,
+          };
+          return { style };
+        }}
       />
     </Container>
   );
